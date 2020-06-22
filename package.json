@@ -1,7 +1,7 @@
 {
-  "name": "example-storefront",
+  "name": "givelist-storefront",
   "version": "3.1.0",
-  "description": "The Example Storefront serves as a reference for implementing a web based storefront using the Reaction Commerce GraphQL API.",
+  "description": "The Givelist Storefront.",
   "keywords": [],
   "author": {
     "name": "Reaction Commerce",
@@ -69,6 +69,7 @@
     "react-container-query": "~0.11.0",
     "react-dom": "^16.13.0",
     "react-helmet": "~5.2.0",
+    "react-paypal-button-v2": "^2.6.2",
     "react-stripe-elements": "~2.0.3",
     "react-tracking": "~5.6.0",
     "reacto-form": "~1.4.0",
@@ -84,6 +85,7 @@
     "babel-jest": "^26.0.1",
     "babel-preset-jest": "^26.0.0",
     "broken-link-checker": "~0.7.8",
+    "dotenv": "^8.2.0",
     "eslint": "~4.19.1",
     "eslint-plugin-import": "~2.16.0",
     "eslint-plugin-jest": "~21.27.2",

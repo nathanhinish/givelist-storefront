@@ -15,6 +15,7 @@ import Layout from "components/Layout";
 import Router from "translations/i18nRouter";
 import PageLoading from "components/PageLoading";
 import { withApollo } from "lib/apollo/withApollo";
+import appConfig from "../../config.js";
 
 import { locales } from "translations/config";
 import fetchPrimaryShop from "staticUtils/shop/fetchPrimaryShop";
@@ -22,27 +23,27 @@ import fetchTranslations from "staticUtils/translations/fetchTranslations";
 
 const styles = (theme) => ({
   cartEmptyMessageContainer: {
-    margin: "80px 0"
+    margin: "80px 0",
   },
   checkoutButtonsContainer: {
     backgroundColor: theme.palette.reaction.black02,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   customerSupportCopy: {
-    paddingLeft: `${theme.spacing(4)}px !important`
+    paddingLeft: `${theme.spacing(4)}px !important`,
   },
   phoneNumber: {
-    fontWeight: theme.typography.fontWeightBold
+    fontWeight: theme.typography.fontWeightBold,
   },
   title: {
     fontWeight: theme.typography.fontWeightRegular,
     marginTop: "1.6rem",
-    marginBottom: "3.1rem"
+    marginBottom: "3.1rem",
   },
   itemWrapper: {
     borderTop: theme.palette.borders.default,
-    borderBottom: theme.palette.borders.default
-  }
+    borderBottom: theme.palette.borders.default,
+  },
 });
 
 class CartPage extends Component {
@@ -52,15 +53,15 @@ class CartPage extends Component {
       items: PropTypes.arrayOf(PropTypes.object),
       checkout: PropTypes.shape({
         fulfillmentTotal: PropTypes.shape({
-          displayAmount: PropTypes.string
+          displayAmount: PropTypes.string,
         }),
         itemTotal: PropTypes.shape({
-          displayAmount: PropTypes.string
+          displayAmount: PropTypes.string,
         }),
         taxTotal: PropTypes.shape({
-          displayAmount: PropTypes.string
-        })
-      })
+          displayAmount: PropTypes.string,
+        }),
+      }),
     }),
     classes: PropTypes.object,
     hasMoreCartItems: PropTypes.bool,
@@ -69,8 +70,8 @@ class CartPage extends Component {
     onRemoveCartItems: PropTypes.func,
     shop: PropTypes.shape({
       name: PropTypes.string.isRequired,
-      description: PropTypes.string
-    })
+      description: PropTypes.string,
+    }),
   };
 
   handleClick = () => Router.push("/");
@@ -130,7 +131,7 @@ class CartPage extends Component {
             itemsQuantity={cart.totalItemQuantity}
           />
           <div className={classes.checkoutButtonsContainer}>
-            <CheckoutButtons />
+            <CheckoutButtons amount={total.amount} currency={total.currency.code} />
           </div>
         </Grid>
       );
@@ -185,9 +186,9 @@ class CartPage extends Component {
 export async function getStaticProps({ params: { lang } }) {
   return {
     props: {
-      ...await fetchPrimaryShop(lang),
-      ...await fetchTranslations(lang, ["common"])
-    }
+      ...(await fetchPrimaryShop(lang)),
+      ...(await fetchTranslations(lang, ["common"])),
+    },
   };
 }
 
@@ -199,7 +200,7 @@ export async function getStaticProps({ params: { lang } }) {
 export async function getStaticPaths() {
   return {
     paths: locales.map((locale) => ({ params: { lang: locale } })),
-    fallback: false
+    fallback: false,
   };
 }
 

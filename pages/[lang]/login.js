@@ -98,7 +98,7 @@ class Login extends Component {
 
         <Link route="home">
           <div className={classes.logo}>
-            {shop ? <ShopLogo shopName={shop.name} /> : "Example Storefront"}
+            {shop ? <ShopLogo shopName={shop.name} /> : "Givelist Storefront"}
           </div>
         </Link>
 

@@ -32,4 +32,4 @@ RUN yarn install --production=true --frozen-lockfile --ignore-scripts --non-inte
 
 # If any Node flags are needed, they can be set in the NODE_OPTIONS env variable.
 CMD ["tini", "--", "yarn", "start"]
-LABEL com.reactioncommerce.name="example-storefront"
+LABEL com.reactioncommerce.name="givelist-storefront"

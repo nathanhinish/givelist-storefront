@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@reactioncommerce/components/Button/v1";
+import { PayPalButton } from "react-paypal-button-v2";
 import Router from "translations/i18nRouter";
 
 export default class CheckoutButtons extends Component {
@@ -20,36 +21,43 @@ export default class CheckoutButtons extends Component {
     /**
      * className for primary checkout button
      */
-    primaryClassName: PropTypes.string
-  }
+    primaryClassName: PropTypes.string,
+
+    amount: PropTypes.number,
+    currency: PropTypes.string,
+    clientId: PropTypes.string
+  };
 
   static defaultProps = {
     primaryButtonRoute: "/cart/checkout",
-    primaryButtonText: "Checkout"
+    primaryButtonText: "Checkout",
   };
 
   handleOnClick = () => {
     const { primaryButtonRoute } = this.props;
     Router.push(primaryButtonRoute);
-  }
+  };
 
   render() {
-    const {
-      isDisabled,
-      primaryClassName,
-      primaryButtonText
-    } = this.props;
-
+    const { isDisabled, primaryClassName, primaryButtonText, amount, currency, clientId } = this.props;
     return (
-      <Button
-        actionType="important"
-        className={primaryClassName}
-        isDisabled={isDisabled}
-        isFullWidth
-        onClick={this.handleOnClick}
-      >
-        {primaryButtonText}
-      </Button>
+      <div className="checkout-buttons">
+        <PayPalButton
+          amount={amount}
+          currency={currency}
+          shippingPreference="NO_SHIPPING"
+          clientId={clientId}
+        />
+        <Button
+          actionType="important"
+          className={primaryClassName}
+          isDisabled={isDisabled}
+          isFullWidth
+          onClick={this.handleOnClick}
+        >
+          {primaryButtonText}
+        </Button>
+      </div>
     );
   }
 }
