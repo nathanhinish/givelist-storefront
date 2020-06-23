@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 function CartPage(props) {
   const { cart, shop, hasMoreCartItems, loadMoreCartItems, onRemoveCartItems, onChangeCartItemsQuantity } = props;
   const clientId = process.env.PAYPAL_CLIENT_ID;
-  console.info(clientId);
 
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
@@ -66,8 +65,7 @@ function CartPage(props) {
     onChangeCartItemsQuantity({ quantity, cartItemId });
   }
 
-  async function handlePlaceOrder(result) {
-    setIsPlacingOrder(true);
+  async function handleSuccess(result) {
     await placeOrder({
       client: apolloClient,
       result,
@@ -77,6 +75,29 @@ function CartPage(props) {
       checkoutMutations,
       clearAuthenticatedUsersCart,
     });
+    setIsPlacingOrder(false);
+  }
+
+  function handleCreateOrder(data, actions) {
+    const { total } = cart.checkout.summary;
+    setIsPlacingOrder(true);
+
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            currency_code: total.currency.code,
+            value: total.amount,
+          },
+        },
+      ],
+      application_context: {
+        shipping_preference: "NO_SHIPPING",
+      },
+    });
+  }
+
+  function handleCancel() {
     setIsPlacingOrder(false);
   }
 
@@ -114,20 +135,12 @@ function CartPage(props) {
             shop={shop}
             classes={classes}
             clientId={clientId}
-            onPlaceOrder={handlePlaceOrder}
+            onCreateOrder={handleCreateOrder}
+            onSuccess={handleSuccess}
+            onCancel={handleCancel}
           />
-          {/* <Grid className={classes.customerSupportCopy} item>
-            <Typography paragraph variant="caption">
-              Have questions? call <span className={classes.phoneNumber}>1.800.555.5555</span>
-            </Typography>
-            <Typography paragraph variant="caption">
-              <Link href="#">Shipping information</Link>
-            </Typography>
-            <Typography paragraph variant="caption">
-              <Link href="#">Return policy</Link>
-            </Typography>
-          </Grid> */}
         </Grid>
+        {overlay}
       </section>
     </Layout>
   );

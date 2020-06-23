@@ -1,16 +1,16 @@
 import { useApolloClient } from "@apollo/client";
 import Grid from "@material-ui/core/Grid";
 import CartSummary from "@reactioncommerce/components/CartSummary/v1";
-import CheckoutButtons from "components/CheckoutButtons";
+import CheckoutButtons from "../../CheckoutButtons";
 import PropTypes from "prop-types";
 import React from "react";
 
 export default function GivelistCartSummary(props) {
-  const { cart, shop, classes, clientId, onPlaceOrder } = props;
+  const { cart, shop, classes, clientId, onSuccess, onCreateOrder, onCancel } = props;
 
-  async function handlePlaceOrder(result) {
-    if (onPlaceOrder) {
-      onPlaceOrder(result);
+  async function handleSuccess(result) {
+    if (onSuccess) {
+      onSuccess(result);
     }
   }
 
@@ -32,7 +32,9 @@ export default function GivelistCartSummary(props) {
             amount={total.amount}
             currency={total.currency.code}
             clientId={clientId}
-            onPlaceOrder={handlePlaceOrder}
+            onCreateOrder={onCreateOrder}
+            onSuccess={handleSuccess}
+            onCancel={onCancel}
           />
         </div>
       </Grid>
@@ -47,5 +49,7 @@ GivelistCartSummary.propTypes = {
   shop: PropTypes.object,
   classes: PropTypes.object,
   clientId: PropTypes.string,
-  onPlaceOrder: PropTypes.func,
+  onCreateOrder: PropTypes.func,
+  onSuccess: PropTypes.func,
+  onCancel: PropTypes.func,
 };
