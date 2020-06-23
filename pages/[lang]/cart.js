@@ -57,6 +57,8 @@ function CartPage(props) {
   const apolloClient = useApolloClient();
   const classes = useStyles();
 
+  console.info(cartStore);
+
   // when a user has no item in cart in a new session, props.cart is null
   // when the app is still loading, props.cart is undefined
   if (typeof cart === "undefined") return <PageLoading delay={0} />;

@@ -25,14 +25,13 @@ async function getShopAddress(client, shop) {
 function handleShippingAddressResult(result) {
   const {
     data: {
-      setShippingAddressOnCart: {
-        cart: {
-          checkout: { fulfillmentGroups },
-        },
-      },
+      setShippingAddressOnCart: { cart },
     },
   } = result;
 
+  const {
+    checkout: { fulfillmentGroups },
+  } = cart;
   if (fulfillmentGroups.length === 0) {
     throw new Error("There are no fulfillment groups in this cart");
   }
@@ -43,6 +42,7 @@ function handleShippingAddressResult(result) {
   }
 
   return {
+    cart,
     fulfillmentGroup: fulfillmentGroups[0],
     fulfillmentOption: availableFulfillmentOptions[0],
   };
@@ -51,12 +51,10 @@ function handleShippingAddressResult(result) {
 function handleFulfillmentMethodResult(result) {
   const {
     data: {
-      selectFulfillmentOptionForGroup: {
-        cart: { checkout },
-      },
+      selectFulfillmentOptionForGroup: { cart },
     },
   } = result;
-  return { checkout };
+  return { cart };
 }
 
 export default async function placeOrder({
@@ -72,16 +70,18 @@ export default async function placeOrder({
   const { onSetFulfillmentOption, onSetShippingAddress } = checkoutMutations;
   const orderEmailAddress =
     get(details, "payer.email_address") || get(cart, "account.emailRecords[0].address") || (cart ? cart.email : null);
-
   const shopAddress = await getShopAddress(client, shop);
+
   const { fulfillmentGroup, fulfillmentOption } = handleShippingAddressResult(await onSetShippingAddress(shopAddress));
 
-  const { checkout } = handleFulfillmentMethodResult(
+  const { cart: updatedCart } = handleFulfillmentMethodResult(
     await onSetFulfillmentOption({
       fulfillmentGroupId: fulfillmentGroup._id,
       fulfillmentMethodId: fulfillmentOption.fulfillmentMethod._id,
     })
   );
+
+  const {checkout} = updatedCart;
 
   const fulfillmentGroups = checkout.fulfillmentGroups.map((group) => {
     const { data } = group;
@@ -109,11 +109,11 @@ export default async function placeOrder({
     currencyCode: checkout.summary.total.currency.code,
     email: orderEmailAddress,
     fulfillmentGroups,
-    shopId: cart.shop._id,
+    shopId: updatedCart.shop._id,
   };
 
   const { id: transactionId, payer, purchase_units: units } = details;
-
+  const fullName = `${payer.name.given_name} ${payer.name.surname}`;
   const billingAddress = {
     address1: payer.address.address_line_1,
     address2: payer.address.address_line_2,
@@ -121,7 +121,7 @@ export default async function placeOrder({
     region: payer.address.admin_area_1,
     country: payer.address.country_code,
     postal: payer.address.postal_code,
-    fullName: `${payer.name.given_name} ${payer.name.surname}`,
+    fullName: fullName,
     phone: payer.phone.phone_number.national_number,
   };
 
@@ -134,6 +134,7 @@ export default async function placeOrder({
       },
       data: {
         transactionId,
+        fullName
       },
     };
   });

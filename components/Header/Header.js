@@ -70,7 +70,7 @@ class Header extends Component {
           <div className={controls}>
             <Typography className={title} color="inherit" variant="h6">
               <Link route="/">
-                {shop ? <ShopLogo shopName={shop.name} /> : "Givelist Storefront"}
+                {shop ? <ShopLogo shopName={shop.name} /> : "Givelist"}
               </Link>
             </Typography>
 
@@ -79,7 +79,7 @@ class Header extends Component {
             </Hidden>
           </div>
 
-          <LocaleDropdown />
+          {/* <LocaleDropdown /> */}
 
           <AccountDropdown />
           <MiniCart />

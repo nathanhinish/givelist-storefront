@@ -140,7 +140,7 @@ class OrderCardHeader extends Component {
                     className={classnames(classes.orderCardInfoTextBold, classes.orderCardExpandedInfoHeaderText)}
                   >
                     Payment Method{payments.length !== 1 ? "s" : null}:
-                  </Typography>
+                  </Typography>{' '}
                   {this.renderOrderPayments()}
                 </Grid>
                 <Grid item className={classes.orderCardExpandedInfoSection} xs={12} md={12}>
@@ -149,7 +149,7 @@ class OrderCardHeader extends Component {
                     className={classnames(classes.orderCardInfoTextBold, classes.orderCardExpandedInfoHeaderText)}
                   >
                     Shipping Method{fulfillmentGroups.length !== 1 ? "s" : null}:
-                  </Typography>
+                  </Typography>{' '}
                   {this.renderOrderShipments()}
                 </Grid>
               </Grid>

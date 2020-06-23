@@ -173,7 +173,7 @@ export default function useCart() {
   };
 
   const handleUpdateFulfillmentOptionsForGroup = async (fulfillmentGroupId) => {
-    await apolloClient.mutate({
+    return await apolloClient.mutate({
       mutation: updateFulfillmentOptionsForGroup,
       variables: {
         input: {
@@ -270,8 +270,9 @@ export default function useCart() {
 
         // Update fulfillment options for current cart
         const { data: { setShippingAddressOnCart } } = response;
-        handleUpdateFulfillmentOptionsForGroup(setShippingAddressOnCart.cart.checkout.fulfillmentGroups[0]._id);
+        const response2 = await handleUpdateFulfillmentOptionsForGroup(setShippingAddressOnCart.cart.checkout.fulfillmentGroups[0]._id);
 
+        response.data.setShippingAddressOnCart.cart = response2.data.updateFulfillmentOptionsForGroup.cart;
         return response;
       }
     },
