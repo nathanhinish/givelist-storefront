@@ -17,7 +17,7 @@ const styles = (theme) => ({
 const Footer = ({ ...props }) => (
   <footer className={props.classes.footer}>
     <Typography variant="caption">
-      &copy; {date.getFullYear()} Reaction Commerce
+      &copy;{date.getFullYear()} Givelist. All rights reserved.
     </Typography>
   </footer>
 );

@@ -86,7 +86,7 @@ class MiniCart extends Component {
 
   handleCheckoutButtonClick = () => {
     this.handleLeavePopper();
-    Router.push("/cart/checkout");
+    Router.push("/cart");
   }
 
   handlePopperClose = () => {
@@ -129,6 +129,7 @@ class MiniCart extends Component {
         <MiniCartComponent
           cart={cart}
           onCheckoutButtonClick={this.handleCheckoutButtonClick}
+          checkoutButtonText="Go to cart"
           components={{
             QuantityInput: "div",
             CartItems: (cartItemProps) => (

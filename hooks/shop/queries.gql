@@ -1,0 +1,28 @@
+query shopAddressesQuery($shopId: ID!) {
+  shopAddresses: shop(id: $shopId) {
+    addressBook {
+      address1
+      address2
+      city
+      company
+      country
+      firstName
+      fullName
+      isBillingDefault
+      isCommercial
+      isShippingDefault
+      lastName
+      metafields {
+        description
+        key
+        namespace
+        scope
+        value
+        valueType
+      }
+      phone
+      postal
+      region
+    }
+  }
+}

@@ -20,16 +20,16 @@ class ProductGridPage extends Component {
     routingStore: PropTypes.object,
     shop: PropTypes.shape({
       currency: PropTypes.shape({
-        code: PropTypes.string.isRequired
-      })
+        code: PropTypes.string.isRequired,
+      }),
     }),
     tag: PropTypes.object,
     uiStore: PropTypes.shape({
       pageSize: PropTypes.number.isRequired,
       setPageSize: PropTypes.func.isRequired,
       setSortBy: PropTypes.func.isRequired,
-      sortBy: PropTypes.string.isRequired
-    })
+      sortBy: PropTypes.string.isRequired,
+    }),
   };
 
   componentDidMount() {
@@ -54,7 +54,7 @@ class ProductGridPage extends Component {
       isLoadingCatalogItems,
       routingStore: { query },
       shop,
-      uiStore
+      uiStore,
     } = this.props;
     const pageSize = query && inPageSizes(query.limit) ? parseInt(query.limit, 10) : uiStore.pageSize;
     const sortBy = query && query.sortby ? query.sortby : uiStore.sortBy;
@@ -69,10 +69,7 @@ class ProductGridPage extends Component {
 
     return (
       <Layout shop={shop}>
-        <Helmet
-          title={pageTitle}
-          meta={[{ name: "description", content: shop && shop.description }]}
-        />
+        <Helmet title={pageTitle} meta={[{ name: "description", content: shop && shop.description }]} />
         <ProductGrid
           catalogItems={catalogItems}
           currencyCode={(shop && shop.currency && shop.currency.code) || "USD"}
@@ -82,6 +79,7 @@ class ProductGridPage extends Component {
           setPageSize={this.setPageSize}
           setSortBy={this.setSortBy}
           sortBy={sortBy}
+          onItemClick={() => {}}
         />
       </Layout>
     );
@@ -97,9 +95,9 @@ class ProductGridPage extends Component {
 export async function getStaticProps({ params: { lang } }) {
   return {
     props: {
-      ...await fetchPrimaryShop(lang),
-      ...await fetchTranslations(lang, ["common"])
-    }
+      ...(await fetchPrimaryShop(lang)),
+      ...(await fetchTranslations(lang, ["common"])),
+    },
   };
 }
 
@@ -111,7 +109,7 @@ export async function getStaticProps({ params: { lang } }) {
 export async function getStaticPaths() {
   return {
     paths: locales.map((locale) => ({ params: { lang: locale } })),
-    fallback: false
+    fallback: false,
   };
 }
 

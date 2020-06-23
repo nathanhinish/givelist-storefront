@@ -12,8 +12,8 @@ import ProductGridEmptyMessage from "./ProductGridEmptyMessage";
 const styles = (theme) => ({
   filters: {
     justifyContent: "flex-end",
-    marginBottom: theme.spacing(2)
-  }
+    marginBottom: theme.spacing(2),
+  },
 });
 
 class ProductGrid extends Component {
@@ -28,12 +28,12 @@ class ProductGrid extends Component {
       hasNextPage: PropTypes.bool,
       hasPreviousPage: PropTypes.bool,
       loadNextPage: PropTypes.func,
-      loadPreviousPage: PropTypes.func
+      loadPreviousPage: PropTypes.func,
     }),
     pageSize: PropTypes.number.isRequired,
     setPageSize: PropTypes.func.isRequired,
     setSortBy: PropTypes.func.isRequired,
-    sortBy: PropTypes.string.isRequired
+    sortBy: PropTypes.string.isRequired,
   };
 
   renderFilters() {
